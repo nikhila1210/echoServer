@@ -3,50 +3,35 @@ import java.net.*;
 
 public class EchoServer
 {
-	public EchoServer(int portnum)
-	{
-		try
-		{
-			server = new ServerSocket(portnum);
-		}
-		catch (Exception err)
-		{
-			System.out.println(err);
-		}
-	}
-public void serve()
-	{
-		try
-		{
-			while (true)
-			{
-				Socket client = server.accept();
-				BufferedReader r = new BufferedReader(new InputStreamReader(client.getInputStream()));
-				PrintWriter w = new PrintWriter(client.getOutputStream(), true);
-				w.println("Welcome to the Java EchoServer.  Type 'bye' to close.");
-				String line;
-				do
-				{
-					line = r.readLine();
-					if ( line != null ){
-						w.println("Server echo: "+ line);	
-						System.out.println("Client says : "+line);		
-					}
-				}
-				while ( !line.trim().equals("bye") );
-				client.close();
-			}
-		}
-		catch (Exception err)
-		{
-			System.err.println(err);
-		}
-	}
-	public static void main(String[] args)
-	{
-		EchoServer s = new EchoServer(9999);
-		s.serve();
-	}
+  public static void main(String[] args) throws Exception
+  {
+      ServerSocket sersock = new ServerSocket(3000);
+      System.out.println("Server ready for chatting");
+      Socket sock = sersock.accept( );                          
+      // reading from keyboard (keyRead object)
+      BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
+	  // sending to client (pwrite object)
+      OutputStream ostream = sock.getOutputStream(); 
+      PrintWriter pwrite = new PrintWriter(ostream, true);
 
-	private ServerSocket server;
-}
+      // receiving from server ( receiveRead  object)
+      InputStream istream = sock.getInputStream();
+      BufferedReader receiveRead = new BufferedReader(new InputStreamReader(istream));
+
+      String receiveMessage, sendMessage;               
+      do
+      {
+      	receiveMessage = receiveRead.readLine();
+      	System.out.println("Received: " + receiveMessage); 
+      	sendMessage = new String(receiveMessage);
+      	pwrite.println(sendMessage); 
+      	pwrite.flush(); 
+        if((receiveMessage.equalsIgnoreCase("ok"))||(sendMessage.equalsIgnoreCase("ok"))) 
+        {
+        	System.out.println("Server exiting...");	
+		System.exit(0);   
+        }   
+      } while(true);	
+    }                    
+}                        
+
