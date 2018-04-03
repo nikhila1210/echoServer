@@ -42,3 +42,11 @@ public void serve()
 			System.err.println(err);
 		}
 	}
+	public static void main(String[] args)
+	{
+		EchoServer s = new EchoServer(9999);
+		s.serve();
+	}
+
+	private ServerSocket server;
+}
