@@ -29,7 +29,7 @@ public void serve()
 				{
 					line = r.readLine();
 					if ( line != null ){
-						w.println("Server: "+ line);	
+						w.println("Server echo: "+ line);	
 						System.out.println("Client says : "+line);		
 					}
 				}
