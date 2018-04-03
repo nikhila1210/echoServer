@@ -1,30 +1,31 @@
 import java.io.*;
 import java.net.*;
-
 public class EchoClient
 {
-	public static void main(String[] args)
-	{
-		try
-		{
-			Socket s = new Socket("127.0.0.1", 9999);
-                        BufferedReader r = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			PrintWriter w = new PrintWriter(s.getOutputStream(), true);
-			BufferedReader con = new BufferedReader(new InputStreamReader(System.in));
-			String line;
-			do
-			{
-				line = r.readLine();
-				if ( line != null )
-					System.out.println(line);
-				line = con.readLine();
-				w.println(line);
-			}
-			while ( !line.trim().equals("bye") );
-		}
-		catch (Exception err)
-		{
-			System.err.println(err);
-		}
-	}
-}
+  public static void main(String[] args) throws Exception
+  {
+     Socket sock = new Socket("127.0.0.1", 3000);
+     BufferedReader keyRead = new BufferedReader(new InputStreamReader(System.in));
+     OutputStream ostream = sock.getOutputStream(); 
+     PrintWriter pwrite = new PrintWriter(ostream, true);
+     InputStream istream = sock.getInputStream();
+     BufferedReader receiveRead = new BufferedReader(new InputStreamReader(istream));
+     System.out.println("Client ready for chatting, type 'ok' to exit");
+     String receiveMessage, sendMessage;               
+     do
+     {
+      	System.out.print("Client: ");
+        sendMessage = keyRead.readLine();   
+        pwrite.println(sendMessage);
+        pwrite.flush();  
+        receiveMessage = receiveRead.readLine();
+        System.out.println("Server: " + receiveMessage);        
+	if((sendMessage.equalsIgnoreCase("ok"))||(receiveMessage.equalsIgnoreCase("ok")))
+        {
+       		System.out.println("Client exiting..."); 
+		System.exit(0);
+			
+        } 
+      }while(true) ;   
+    }                    
+}           
