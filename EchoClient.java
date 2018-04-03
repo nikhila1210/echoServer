@@ -20,3 +20,11 @@ public class EchoClient
 				line = con.readLine();
 				w.println(line);
 			}
+			while ( !line.trim().equals("bye") );
+		}
+		catch (Exception err)
+		{
+			System.err.println(err);
+		}
+	}
+}
